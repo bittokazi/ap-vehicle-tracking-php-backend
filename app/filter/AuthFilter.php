@@ -18,6 +18,7 @@ class AuthFilter extends Filter {
         $decoded = null;
         foreach (getallheaders() as $name => $value) { 
             if($name=="auth-token") {
+                echo AUTH_KEY;
                 $key = AUTH_KEY;
                 try {
                     $decoded = JWT::decode($value, $key, array('HS256'));
