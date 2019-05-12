@@ -17,9 +17,7 @@ class AuthFilter extends Filter {
         header("Access-Control-Allow-Origin: *");
         $decoded = null;
         foreach (getallheaders() as $name => $value) { 
-            echo AUTH_KEY.'<br>';
-            echo $name.' - '.$value.'<br>';
-            if($name=="auth-token") {
+            if(strtolower($name)=="auth-token") {
                 $key = AUTH_KEY;
                 try {
                     $decoded = JWT::decode($value, $key, array('HS256'));
@@ -27,7 +25,6 @@ class AuthFilter extends Filter {
                 }
             }
         }
-        exit;
         if($decoded==null) {
             Response::setStatusCode(401);
             $response->error = "Authentication Failed";
