@@ -1,0 +1,36 @@
+{
+    "name": "bittokazi/php-simple-mvc-framework",
+    "description": "PHP framework made for simplicity",
+    "keywords": [
+        "framework",
+        "php mvc",
+        "mvc",
+        "ORM"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bittokazi",
+            "email": "bitto.kazi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "respect/validation": "^2.0@dev",
+        "lcobucci/jwt": "^4.0@dev",
+        "firebase/php-jwt": "dev-master",
+        "alymosul/exponent-server-sdk-php": "dev-master"
+    },
+    "require-dev": {
+    },
+    "scripts": {
+        "server:start": "php -S 0.0.0.0:8000 -t public/",
+        "db:install": "@php core/console/DatabaseInstall.php",
+        "db:seed": "@php core/console/DatabaseSeed.php",
+        "db:uninstall": "@php core/console/DatabaseUninstall.php"
+    },
+    "scripts-descriptions": {
+        "server:start": "Running Server on 0.0.0.0:8000"
+    }
+}
