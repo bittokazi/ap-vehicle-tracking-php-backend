@@ -42,11 +42,13 @@ class DbChageInit extends Database {
             )');
     }
     public function seed() {
+        $username = $_ENV['DEFAULT_USERNAME'];
+        $password = Auth::CryptBf($_ENV['DEFAULT_PASSWORD']);
         $this->query("INSERT INTO user_status VALUES(NULL, 'Active')");
         $this->query("INSERT INTO user_status VALUES(NULL, 'Inactive')");
         $this->query("INSERT INTO user_role VALUES(NULL, 'Administrator')");
         $this->query("INSERT INTO user_role VALUES(NULL, 'Manager')");
-        $this->query("INSERT INTO user VALUES(NULL, 'admin', '".Auth::CryptBf('password')."', 'bitto.kazi@gmail.com', 'N/A', 'N/A', '1', '1', NULL, NULL)");
+        $this->query("INSERT INTO user VALUES(NULL, '".$username."', '".$password."', 'bitto.kazi@gmail.com', 'N/A', 'N/A', '1', '1', NULL, NULL)");
         //$this->query("INSERT INTO user VALUES(NULL, 'user', '".Auth::CryptBf('password')."', 'bitto.kazi1@gmail.com', 'N/A',  'N/A', '1', '2')");
     }
     public function uninstall() {
