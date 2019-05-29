@@ -100,7 +100,7 @@ class TaskController extends Controller {
                 $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
                               ['rows'][0]['elements'][0]['distance']['value'];
             }
-            $value->tripToCounterEntity[0]->geoCode = $this->gmaps->geocode($value->tripToCounterEntity[0]->title);
+            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
         }
         $task->distance = round($distance/1000);
         $this->view()->json($task);
