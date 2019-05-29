@@ -102,7 +102,7 @@ class TaskController extends Controller {
             }
             $value->tripToCounterEntity[0]->geoCode = $this->gmaps->geocode($value->tripToCounterEntity[0]->title);
         }
-        $task-distance = $distance;
+        $task->distance = $distance;
         $this->view()->json($task);
     }
 
