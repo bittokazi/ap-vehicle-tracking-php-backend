@@ -20,7 +20,11 @@
         "respect/validation": "^2.0@dev",
         "lcobucci/jwt": "^4.0@dev",
         "firebase/php-jwt": "dev-master",
-        "alymosul/exponent-server-sdk-php": "dev-master"
+        "alymosul/exponent-server-sdk-php": "dev-master",
+        "geocoder-php/google-maps-provider": "^4.0@dev",
+        "php-http/guzzle6-adapter": "^2.0@dev",
+        "php-http/message": "^1.6@dev",
+        "yidas/google-maps-services": "dev-master"
     },
     "require-dev": {
     },

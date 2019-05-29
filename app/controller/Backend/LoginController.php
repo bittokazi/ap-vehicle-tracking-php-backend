@@ -23,11 +23,11 @@ class LoginController extends Controller {
                 ->find();
         
         if($user!=null) {
-            $key = AUTH_KEY;
+            $key = "example_key";
             $token = array(
-                "iss" => HOME_URL,
-                "aud" => HOME_URL,
-                "iat" => time()
+                "iss" => "http://example.org",
+                "aud" => "http://example.com",
+                "iat" => 1356999524
             );
             $jwt = JWT::encode($token, $key);
             $response->token = $jwt;
