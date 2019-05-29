@@ -18,6 +18,7 @@ Routes::post('Backend/CounterController#addCounter', '/counter', 'AuthFilter');
 //VehicleController Controller
 Routes::get('Backend/VehicleController', '/vehicle', 'AuthFilter');
 Routes::post('Backend/VehicleController#addVehicle', '/vehicle', 'AuthFilter');
+Routes::get('Backend/VehicleController#vehicleWithOnGoingTrips', '/vehicle/and/task');
 
 //TripController Controller
 Routes::get('Backend/TripController', '/trip', 'AuthFilter');
@@ -37,6 +38,8 @@ Routes::get('Backend/TaskController#getTask', '/task/?id', 'AuthFilter');
 Routes::get('Backend/TaskController#confirmTrip', '/task/confirm/trip/?id', 'AuthFilter');
 Routes::get('Backend/TaskController#leftConfirm', '/task/confirm/left/trip/?id', 'AuthFilter');
 Routes::post('Backend/TaskController#addTripToTask', '/task/add/trip', 'AuthFilter');
+
+Routes::get('Backend/TaskController#getLocation', '/location');
 
 //LoginController Controller
 //TaskController Controller

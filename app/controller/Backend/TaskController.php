@@ -11,6 +11,8 @@ use App\Models\Counter;
 use App\Models\Trip;
 use App\Models\User;
 
+use yidas\googleMaps\Client;
+
 class TaskController extends Controller {
 
     function __construct() {
@@ -25,6 +27,16 @@ class TaskController extends Controller {
 
     public function allTaskPage($data) {
         $this->view()->json($this->task->order('completed', 'ASC')->limit($data->p*10, 10)->findAll());
+    }
+
+    public function getLocation() {
+        $gmaps = new \yidas\googleMaps\Client(['key'=>'AIzaSyAKHP7ldSVRMVy16w-f1gr0E8jPNtY5DHI']);
+
+        //$result = $gmaps->geocode('Dhaka');
+
+        $distanceMatrixResult = $gmaps->distanceMatrix('Dhaka', 'Rajshahi');
+
+        $this->view()->json($distanceMatrixResult);
     }
 
     public function taskWithCounterId($data) {
