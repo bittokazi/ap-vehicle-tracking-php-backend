@@ -35,7 +35,7 @@ class TaskController extends Controller {
 
         //$result = $gmaps->geocode('Dhaka');
 
-        $distanceMatrixResult = $gmaps->distanceMatrix('Dhaka', 'Natore', 'Rajshahi');
+        $distanceMatrixResult = $gmaps->distanceMatrix('Dhaka', 'Rajshahi');
 
         $this->view()->json($distanceMatrixResult);
     }
