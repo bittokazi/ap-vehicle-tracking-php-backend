@@ -95,7 +95,7 @@ class TaskController extends Controller {
             return $first->order_number > $second->order_number;
         });
         foreach ($task->tripEntity as $key => $value) {
-            $task->tripEntity->tripToCounterEntity[0]->geo = $this->gmaps->geocode($task->tripEntity->tripToCounterEntity[0]->title);
+            $value->tripToCounterEntity[0]->geoCode = $this->gmaps->geocode($value->tripToCounterEntity[0]->title);
         }
         $this->view()->json($task);
     }
