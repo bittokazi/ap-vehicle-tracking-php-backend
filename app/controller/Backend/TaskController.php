@@ -98,7 +98,7 @@ class TaskController extends Controller {
         $index = 0 ;
         foreach ($task->tripEntity as $key => $value) {
             if($index>0) {
-                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$index-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
+                $distance = $distance + $this->gmaps->distanceMatrix($task->tripEntity[$index-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
                               ->rows[0]->elements[0]->distance->value;
             }
             $value->tripToCounterEntity[0]->geoCode = $this->gmaps->geocode($value->tripToCounterEntity[0]->title);
