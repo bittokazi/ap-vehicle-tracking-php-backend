@@ -17,7 +17,7 @@ class AuthFilter extends Filter {
         header("Access-Control-Allow-Origin: *");
         $decoded = null;
         foreach (getallheaders() as $name => $value) {
-            if($name=="auth-token") {
+            if(strtolower($name)=="auth-token") {
                 $key = AUTH_KEY;
                 try {
                     $decoded = JWT::decode($value, $key, array('HS256'));
