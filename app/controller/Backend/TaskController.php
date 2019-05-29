@@ -19,6 +19,7 @@ class TaskController extends Controller {
         $this->task = new Task();
         $this->trip = new Trip();
         $this->user = new User();
+        $this->gmaps = new \yidas\googleMaps\Client(['key'=>'AIzaSyAKHP7ldSVRMVy16w-f1gr0E8jPNtY5DHI']);
     }
 
     public function index() {
@@ -93,6 +94,9 @@ class TaskController extends Controller {
         usort($task->tripEntity,function($first,$second){
             return $first->order_number > $second->order_number;
         });
+        foreach ($task->tripEntity as $key => $value) {
+            $task->tripEntity->tripToCounterEntity[0]->geo = $this->gmaps->distanceMatrix($task->tripEntity->tripToCounterEntity[0]->title);
+        }
         $this->view()->json($task);
     }
 
@@ -210,8 +214,9 @@ class TaskController extends Controller {
                 // Notify an interest with a notification
                 $expo->notify($interestDetails[0], $notification);
             }
-        } 
-        
+        }
+
     }
 
 }
+?>
