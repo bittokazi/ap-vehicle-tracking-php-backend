@@ -14,4 +14,5 @@ define('MYSQLI_DB_HOST', $_ENV['DB_HOST']);
 define('MYSQLI_DB_USER', $_ENV['DB_USERNAME']);
 define('MYSQLI_DB_PASS', $_ENV['DB_PASSWORD']);
 define('MYSQLI_DB_NAME', $_ENV['DB_NAME']);
+
 ?>
