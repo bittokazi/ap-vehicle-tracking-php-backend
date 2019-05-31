@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\Counter;
 use App\Models\Trip;
 use App\Models\User;
+use App\Models\Vehicle;
 
 use yidas\googleMaps\Client;
 
@@ -19,6 +20,7 @@ class TaskController extends Controller {
         $this->task = new Task();
         $this->trip = new Trip();
         $this->user = new User();
+        $this->vehicle = new Vehicle();
         $this->gmaps = new \yidas\googleMaps\Client(['key'=>'AIzaSyAKHP7ldSVRMVy16w-f1gr0E8jPNtY5DHI']);
     }
 
@@ -123,6 +125,26 @@ class TaskController extends Controller {
             $task->id = $trip1->task_id;
             $task->completed = 1;
             $this->task->sync($task);
+
+
+            $this->task = new Task();
+            $task = $this->task->where('id', $trip1->task_id)->find();
+            $vehicle = $this->vehicle->where('id', $task->vehicle_id)->find();
+            $distance = 0;
+            foreach ($task->tripEntity as $key => $value) {
+                if($key>0) {
+                    $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
+                                    ['rows'][0]['elements'][0]['distance']['value'];
+                }
+            }
+            if($vehicle->distance == null) {
+                $vehicle->distance = round($distance/1000);
+            } else {
+                $vehicle->distance = $vehicle->distance + round($distance/1000);
+            }
+            $this->vehicle = new Vehicle();
+            $this->vehicle->sync($vehicle);
+
             $v = $trip1->tripVehicleEntity[0]->title;
             $notification = "Task Ended for Vehicle #$v";
             $this->sendNotification($notification);
