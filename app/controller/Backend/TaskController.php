@@ -58,7 +58,7 @@ class TaskController extends Controller {
                         ->innerJoin('counters', 'counter_id', 'id', 'trip_to_counter')
                         ->innerJoin('tasks', 'task_id', 'id', 'trips')
                         ->where('counters.id', $data->id)
-                        ->order('tasks.completed', 'ASC')
+                        ->order('tasks.completed', 'ASC, tasks.id DESC')
                         ->limit($data->p*10, 10)
                         ->findAll();
         $this->view()->json($trip);
@@ -129,6 +129,9 @@ class TaskController extends Controller {
 
             $this->task = new Task();
             $task = $this->task->where('id', $trip1->task_id)->find();
+            usort($task->tripEntity,function($first,$second){
+                return $first->order_number > $second->order_number;
+            });
             $vehicle = $this->vehicle->where('id', $task->vehicle_id)->find();
             $distance = 0;
             foreach ($task->tripEntity as $key => $value) {
