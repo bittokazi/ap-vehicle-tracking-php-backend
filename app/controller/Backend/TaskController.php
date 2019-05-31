@@ -29,7 +29,7 @@ class TaskController extends Controller {
     }
 
     public function allTaskPage($data) {
-        $this->view()->json($this->task->order('completed', 'ASC')->limit($data->p*10, 10)->findAll());
+        $this->view()->json($this->task->order('completed', 'ASC, id DESC')->limit($data->p*10, 10)->findAll());
     }
 
     public function getLocation() {
@@ -58,7 +58,7 @@ class TaskController extends Controller {
                         ->innerJoin('counters', 'counter_id', 'id', 'trip_to_counter')
                         ->innerJoin('tasks', 'task_id', 'id', 'trips')
                         ->where('counters.id', $data->id)
-                        ->order('tasks.id', 'DESC, tasks.completed ASC')
+                        ->order('tasks.completed', 'ASC, tasks.id DESC')
                         ->limit($data->p*10, 10)
                         ->findAll();
         $this->view()->json($trip);
