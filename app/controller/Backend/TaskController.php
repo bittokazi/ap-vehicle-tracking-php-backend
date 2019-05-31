@@ -137,6 +137,16 @@ class TaskController extends Controller {
         $d = $trip1->tripToCounterEntity[0]->title;
         $notification = "Vehicle #$v Reached #$d";
         $this->sendNotification($notification);
+
+        $distance = 0;
+        foreach ($task->tripEntity as $key => $value) {
+            if($key>0) {
+                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
+                              ['rows'][0]['elements'][0]['distance']['value'];
+            }
+            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
+        }
+        $task->distance = round($distance/1000);
         $this->view()->json($task);
     }
 
@@ -158,6 +168,16 @@ class TaskController extends Controller {
         $d = $trip1->tripToCounterEntity[0]->title;
         $notification = "Vehicle #$v left #$d";
         $this->sendNotification($notification);
+
+        $distance = 0;
+        foreach ($task->tripEntity as $key => $value) {
+            if($key>0) {
+                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
+                              ['rows'][0]['elements'][0]['distance']['value'];
+            }
+            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
+        }
+        $task->distance = round($distance/1000);
         $this->view()->json($task);
     }
 
@@ -197,6 +217,16 @@ class TaskController extends Controller {
             $d = $trip1->tripToCounterEntity[0]->title;
             $notification = "Vehicle #$v Reached #$d";
             $this->sendNotification($notification);
+
+            $distance = 0;
+            foreach ($response->task->tripEntity as $key => $value) {
+                if($key>0) {
+                    $distance += $this->gmaps->distanceMatrix($response->task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
+                                ['rows'][0]['elements'][0]['distance']['value'];
+                }
+                $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
+            }
+            $response->task->distance = round($distance/1000);
         } else {
             Response::setStatusCode(412);
             $error = array();
