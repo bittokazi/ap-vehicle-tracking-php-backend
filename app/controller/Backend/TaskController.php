@@ -58,7 +58,7 @@ class TaskController extends Controller {
                         ->innerJoin('counters', 'counter_id', 'id', 'trip_to_counter')
                         ->innerJoin('tasks', 'task_id', 'id', 'trips')
                         ->where('counters.id', $data->id)
-                        ->order('tasks.completed', 'ASC, tasks.id DESC')
+                        ->order('tasks.id', 'DESC, tasks.completed ASC')
                         ->limit($data->p*10, 10)
                         ->findAll();
         $this->view()->json($trip);
