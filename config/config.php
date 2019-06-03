@@ -15,4 +15,6 @@ define('MYSQLI_DB_USER', $_ENV['DB_USERNAME']);
 define('MYSQLI_DB_PASS', $_ENV['DB_PASSWORD']);
 define('MYSQLI_DB_NAME', $_ENV['DB_NAME']);
 
+define('GOOGLE_API_KEY', $_ENV['GOOGLE_API_KEY']);
+
 ?>

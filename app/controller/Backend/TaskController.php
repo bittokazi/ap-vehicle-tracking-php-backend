@@ -21,7 +21,7 @@ class TaskController extends Controller {
         $this->trip = new Trip();
         $this->user = new User();
         $this->vehicle = new Vehicle();
-        $this->gmaps = new \yidas\googleMaps\Client(['key'=>'AIzaSyAKHP7ldSVRMVy16w-f1gr0E8jPNtY5DHI']);
+        $this->gmaps = new \yidas\googleMaps\Client(['key'=>GOOGLE_API_KEY]);
     }
 
     public function index() {
@@ -30,16 +30,6 @@ class TaskController extends Controller {
 
     public function allTaskPage($data) {
         $this->view()->json($this->task->order('completed', 'ASC, id DESC')->limit($data->p*10, 10)->findAll());
-    }
-
-    public function getLocation() {
-        $gmaps = new \yidas\googleMaps\Client(['key'=>'AIzaSyAKHP7ldSVRMVy16w-f1gr0E8jPNtY5DHI']);
-
-        //$result = $gmaps->geocode('Dhaka');
-
-        $distanceMatrixResult = $gmaps->distanceMatrix('Dhaka', 'Rajshahi');
-
-        $this->view()->json($distanceMatrixResult);
     }
 
     public function taskWithCounterId($data) {
@@ -96,15 +86,7 @@ class TaskController extends Controller {
         usort($task->tripEntity,function($first,$second){
             return $first->order_number > $second->order_number;
         });
-        $distance = 0;
-        foreach ($task->tripEntity as $key => $value) {
-            if($key>0) {
-                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
-                              ['rows'][0]['elements'][0]['distance']['value'];
-            }
-            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
-        }
-        $task->distance = round($distance/1000);
+        $this->setGeoData($task);
         $this->view()->json($task);
     }
 
@@ -133,13 +115,7 @@ class TaskController extends Controller {
                 return $first->order_number > $second->order_number;
             });
             $vehicle = $this->vehicle->where('id', $task->vehicle_id)->find();
-            $distance = 0;
-            foreach ($task->tripEntity as $key => $value) {
-                if($key>0) {
-                    $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
-                                    ['rows'][0]['elements'][0]['distance']['value'];
-                }
-            }
+            $distance = $this->setGeoData($task);
             if($vehicle->distance == null) {
                 $vehicle->distance = round($distance/1000);
             } else {
@@ -163,15 +139,7 @@ class TaskController extends Controller {
         $notification = "Vehicle #$v Reached #$d";
         $this->sendNotification($notification);
 
-        $distance = 0;
-        foreach ($task->tripEntity as $key => $value) {
-            if($key>0) {
-                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
-                              ['rows'][0]['elements'][0]['distance']['value'];
-            }
-            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
-        }
-        $task->distance = round($distance/1000);
+        $this->setGeoData($response->task);
         $this->view()->json($task);
     }
 
@@ -194,15 +162,7 @@ class TaskController extends Controller {
         $notification = "Vehicle #$v left #$d";
         $this->sendNotification($notification);
 
-        $distance = 0;
-        foreach ($task->tripEntity as $key => $value) {
-            if($key>0) {
-                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
-                              ['rows'][0]['elements'][0]['distance']['value'];
-            }
-            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
-        }
-        $task->distance = round($distance/1000);
+        $this->setGeoData($task);
         $this->view()->json($task);
     }
 
@@ -243,15 +203,7 @@ class TaskController extends Controller {
             $notification = "Vehicle #$v Reached #$d";
             $this->sendNotification($notification);
 
-            $distance = 0;
-            foreach ($response->task->tripEntity as $key => $value) {
-                if($key>0) {
-                    $distance += $this->gmaps->distanceMatrix($response->task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
-                                ['rows'][0]['elements'][0]['distance']['value'];
-                }
-                $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
-            }
-            $response->task->distance = round($distance/1000);
+            $this->setGeoData($response->task);
         } else {
             Response::setStatusCode(412);
             $error = array();
@@ -277,6 +229,19 @@ class TaskController extends Controller {
             }
         }
 
+    }
+
+    public function setGeoData($task) {
+        $distance = 0;
+        foreach ($task->tripEntity as $key => $value) {
+            if($key>0) {
+                $distance += $this->gmaps->distanceMatrix($task->tripEntity[$key-1]->tripToCounterEntity[0]->title, $value->tripToCounterEntity[0]->title)
+                              ['rows'][0]['elements'][0]['distance']['value'];
+            }
+            $value->tripToCounterEntity[0]->location = $this->gmaps->geocode($value->tripToCounterEntity[0]->title)[0]['geometry']['location'];
+        }
+        $task->distance = round($distance/1000);
+        return $task->distance;
     }
 
 }

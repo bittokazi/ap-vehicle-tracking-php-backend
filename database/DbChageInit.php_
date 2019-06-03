@@ -38,7 +38,8 @@ class DbChageInit extends Database {
         $this->query('CREATE TABLE vehicles (
             id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             title VARCHAR(255) NOT NULL UNIQUE,
-            registration_number VARCHAR(255) NOT NULL UNIQUE
+            registration_number VARCHAR(255) NOT NULL UNIQUE,
+            distance INT(11)
             )');
     }
     public function seed() {
