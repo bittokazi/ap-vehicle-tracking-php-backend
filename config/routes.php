@@ -43,6 +43,6 @@ Routes::post('Backend/TaskController#addTripToTask', '/task/add/trip', 'AuthFilt
 Routes::post('Backend/LoginController#index', '/login');
 
 //Driver Controller
-Routes::get('Backend/DriverController#addDriver', '/driver', 'AuthFilter');
+Routes::get('Backend/DriverController', '/driver', 'AuthFilter');
 Routes::post('Backend/DriverController#addDriver', '/driver', 'AuthFilter');
 ?>
