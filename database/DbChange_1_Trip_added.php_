@@ -13,6 +13,7 @@ class DbChange_1_Trip_added extends Database {
             vehicle_id INT(11) NOT NULL,
             completed BOOLEAN,
             description VARCHAR(255),
+            driver_id INT(11),
             created_at DATETIME
             )');
         $this->query('CREATE TABLE trips (

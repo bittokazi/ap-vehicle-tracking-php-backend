@@ -15,8 +15,10 @@ class Task extends ORM {
     public $completed;
     public $description;
     public $created_at;
+    public $driver_id;
     public $tripEntity = 'App\\Models\\Trip';
     public $taskVehicleEntity = 'App\\Models\\Vehicle';
+    public $taskDriverEntity = 'App\\Models\\Driver';
     public $counterStartEntity = 'App\\Models\\Counter';
     public $counterEndEntity = 'App\\Models\\Counter';
 
@@ -42,6 +44,18 @@ class Task extends ORM {
         $relationMetaData->relation = "OneToOne";
         $relationMetaData->fetchType = "eager";
         $relationMetaData->property = "taskVehicleEntity";
+        $relationMetaData->saveRelation = false;
+        return $relationMetaData;
+    }
+
+    public function mapTaskDriverEntity() {
+        $relationMetaData = new \stdClass();
+        $relationMetaData->table = 'drivers';
+        $relationMetaData->mapFrom = 'driver_id';
+        $relationMetaData->mapTo = 'id';
+        $relationMetaData->relation = "OneToOne";
+        $relationMetaData->fetchType = "eager";
+        $relationMetaData->property = "taskDriverEntity";
         $relationMetaData->saveRelation = false;
         return $relationMetaData;
     }
