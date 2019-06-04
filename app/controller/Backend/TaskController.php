@@ -117,9 +117,9 @@ class TaskController extends Controller {
             $vehicle = $this->vehicle->where('id', $task->vehicle_id)->find();
             $distance = $this->setGeoData($task);
             if($vehicle->distance == null) {
-                $vehicle->distance = round($distance/1000);
+                $vehicle->distance = $distance;
             } else {
-                $vehicle->distance = $vehicle->distance + round($distance/1000);
+                $vehicle->distance = $vehicle->distance + $distance;
             }
             $this->vehicle = new Vehicle();
             $this->vehicle->sync($vehicle);
