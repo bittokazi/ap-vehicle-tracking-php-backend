@@ -139,7 +139,7 @@ class TaskController extends Controller {
         $notification = "Vehicle #$v Reached #$d";
         $this->sendNotification($notification);
 
-        $this->setGeoData($response->task);
+        $this->setGeoData($task);
         $this->view()->json($task);
     }
 
