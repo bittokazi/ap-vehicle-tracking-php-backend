@@ -10,4 +10,6 @@ class Vehicle extends ORM {
     public $id;
     public $title;
     public $registration_number;
+    public $distance;
 }
+?>

@@ -13,6 +13,7 @@ class DbChange_1_Trip_added extends Database {
             vehicle_id INT(11) NOT NULL,
             completed BOOLEAN,
             description VARCHAR(255),
+            driver_id INT(11),
             created_at DATETIME
             )');
         $this->query('CREATE TABLE trips (
@@ -38,6 +39,12 @@ class DbChange_1_Trip_added extends Database {
             trip_id INT(11),
             vehicle_id INT(11)
             )');
+        $this->query('CREATE TABLE drivers (
+            id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(1000) NOT NULL,
+            mobile_number VARCHAR(255),
+            driving_license VARCHAR(1000)
+            )');
     }
     public function seed() {
         
@@ -48,6 +55,7 @@ class DbChange_1_Trip_added extends Database {
         $this->query('DROP TABLE trip_to_counter');
         $this->query('DROP TABLE trip_vehicle');
         $this->query('DROP TABLE tasks');
+        $this->query('DROP TABLE drivers');
     }
 }
 ?>

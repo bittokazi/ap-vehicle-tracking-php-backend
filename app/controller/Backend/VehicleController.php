@@ -7,15 +7,29 @@ use Core\Response;
 use Core\Validation;
 use Core\Auth;
 use App\Models\Vehicle;
+use App\Models\Task;
 
 class VehicleController extends Controller {
 
     function __construct() {
         $this->vehicle = new Vehicle();
+        $this->task = new Task();
     }
   
     public function index() {
         $this->view()->json($this->vehicle->findAll());
+    }
+
+    public function vehicleWithOnGoingTrips() {
+        $vehicles = $this->vehicle->findAll();
+        foreach($vehicles as $vehicle) {
+            $this->task = new Task();
+            $vehicle->onGoingTaskEntity = $this->task
+                                                ->whereNull('completed')
+                                                ->w_and('vehicle_id', $vehicle->id)
+                                                ->findAll();
+        }
+        $this->view()->json($vehicles);
     }
 
     public function addVehicle($data) {

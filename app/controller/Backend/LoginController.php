@@ -23,7 +23,7 @@ class LoginController extends Controller {
                 ->find();
         
         if($user!=null) {
-            $key = "example_key";
+            $key = AUTH_KEY;
             $token = array(
                 "iss" => "http://example.org",
                 "aud" => "http://example.com",

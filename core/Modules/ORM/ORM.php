@@ -91,6 +91,12 @@ class ORM extends Database {
         }
         return $this;
     }
+    public function whereNull($field) {
+      if(Database::$db_type=='mysqli') {
+          $this->sql_query .= " WHERE $field IS NULL";
+      }
+      return $this;
+    }
     public function limit($start, $end) {
         if(Database::$db_type=='mysqli') {
             $this->sql_query .= " LIMIT $start, $end";
